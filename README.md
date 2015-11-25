@@ -6,5 +6,5 @@ Para ello dispondrá de un buscador que comprobará a nivel nacional (España) y
 
 ## Datos de interés
 
-- [Repositorio.](https://github.com/alu0100697414/TIO_patents).
-- [Guía docente de la asignatura.](http://eguia.ull.es/etsii/query.php?codigo=139264511).
+- [Repositorio](https://github.com/alu0100697414/TIO_patents).
+- [Guía docente de la asignatura](http://eguia.ull.es/etsii/query.php?codigo=139264511).
