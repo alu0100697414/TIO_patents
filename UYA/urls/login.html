@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Convivecon.es</title>
+    <!-- Archivos CSS -->
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="../css/signin.css" rel="stylesheet">
+    <!-- Fuente de Google Orbitron -->
+    <link href='http://fonts.googleapis.com/css?family=Orbitron:700,900' rel='stylesheet' type='text/css'>
+
+    <!-- Archivos JS -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/login.js"></script>
+
+  </head>
+  <body>
+    <div class="container">
+
+      <form method="post" action="../php/login.php" id="login_form" class="form-signin">
+        <div class="row">
+          <h2 class="form-signin-heading">Convivecon.es</h2>
+          <label class="sr-only">Usuario</label>
+          <input type="text" name="usuario"  class="form-control" placeholder="Usuario" required>
+          <label class="sr-only">Contraseña</label>
+          <input type="password" name="password" class="form-control" placeholder="Contraseña">
+          <div id="login_button">
+            <button class="btn btn-lg btn-primary btn-block" id="bt_login" type="submit">Entrar</button>
+          </div>
+        </div> <!-- .row -->
+      </form>
+
+      <form method="post" action="../php/signup.php" id="signup_form" class="form-signin">
+        <div class="row">
+          <h2 class="form-signin-heading">Convivecon.es</h2>
+          <label class="sr-only">Usuario</label>
+          <input type="text" name="alias"  class="form-control" placeholder="Usuario" required>
+          <label class="sr-only">Contraseña</label>
+          <input type="password" name="clave" class="form-control" placeholder="Contraseña">
+          <label class="sr-only">Repite la contraseña</label>
+          <input type="password" name="clave_2" class="form-control" placeholder="Contraseña">
+          <input type="text" name="nombre_y_apellidos"  class="form-control" placeholder="Nombre y Apellidos" required>
+          <input type="email" name="correo" class="form-control" placeholder="Correo" required autofocus>
+          <input type="text" name="tlf" class="form-control" placeholder="Teléfono" required>
+          <button class="btn btn-lg btn-primary btn-block" id="bt_signup" type="submit">Registrarse</button>
+        </div> <!-- .row -->
+      </form>
+
+      <div id="centrar">
+        <div>
+          <input type="radio" name="choose" id="login" class="radio" checked> Tengo una cuenta
+          <input type="radio" name="choose" id="signup" class="radio"> Soy nuevo!<br>
+        </div>
+        <div id="respuestas"></div>
+      </div>
+
+    </div>
+
+  </body>
+</html>
