@@ -1,3 +1,33 @@
+<?php
+
+$servername = "localhost";
+$username = "alu4586";
+$password = "4OP3Xa";
+$dbname = "alu4586";
+$port = "8889";
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname, $port);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}; 
+
+if ( $result = $database->query( "SELECT titulo,id FROM p_nacional" )) {
+
+
+  if( $result->num_rows > 0 ) {
+	while( $row = $result->fetch_object() ) {
+  	$pepe=$row;
+	}
+  }
+	else{$pepe='pepe'}
+  $result->close();
+
+  $database->close();
+
+
+};
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -27,6 +57,8 @@
       </div><!-- /input-group -->
     </div><!-- /.col-lg-6 -->
 
+   <div>echo $pepe </div>
+
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -34,3 +66,4 @@
     <script src="js/bootstrap.min.js"></script>
   </body>
 </html>
+?>
