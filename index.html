@@ -1,33 +1,3 @@
-<?php
-
-$servername = "localhost";
-$username = "alu4586";
-$password = "4OP3Xa";
-$dbname = "alu4586";
-$port = "8889";
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname, $port);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}; 
-
-if ( $result = $database->query( "SELECT titulo,id FROM p_nacional" )) {
-
-
-  if( $result->num_rows > 0 ) {
-	while( $row = $result->fetch_object() ) {
-  	$pepe=$row;
-	}
-  }
-	else{$pepe='pepe'}
-  $result->close();
-
-  $database->close();
-
-
-};
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -39,6 +9,37 @@ if ( $result = $database->query( "SELECT titulo,id FROM p_nacional" )) {
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.css" rel="stylesheet">
+    <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+
+    <script>
+    function realizaProceso(valorCaja1){
+      var parametros = {
+        "valorCaja1" : valorCaja1,
+      };
+      $.ajax({
+        data:  parametros,
+        url:   'patente_n.php',
+        type:  'post',
+        success:  function (response) {
+          $("#resultado_n").html(response);
+        }
+      });
+    }
+
+    function realizaProceso2(valorCaja1){
+      var parametros = {
+        "valorCaja1" : valorCaja1,
+      };
+      $.ajax({
+        data:  parametros,
+        url:   'patente_i.php',
+        type:  'post',
+        success:  function (response) {
+          $("#resultado_i").html(response);
+        }
+      });
+    }
+    </script>
 
   </head>
   <body background="img/patente.jpg" style="background-repeat: no-repeat; background-position: center top; background-color: #F3F781">
@@ -50,20 +51,22 @@ if ( $result = $database->query( "SELECT titulo,id FROM p_nacional" )) {
     <!-- Buscador -->
     <div class="col-lg-6 col-md-offset-3">
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Buscar patente...">
+        <input type="text" class="form-control" id="valor" placeholder="Buscar patente...">
         <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Buscar</button>
+        <button class="btn btn-default" type="button" href="javascript:;" onclick="realizaProceso($('#valor').val());">España</button>
+        <button class="btn btn-default" type="button" href="javascript:;" onclick="realizaProceso2($('#valor').val());">Iberoamérica</button>
         </span>
       </div><!-- /input-group -->
     </div><!-- /.col-lg-6 -->
 
-   <div>echo $pepe </div>
+    <br><br><br>
 
+    <div id="resultado_n" style="float:left;margin-left:5%;width:40%;border-radius:15px;background-color:white;"></div>
+    <div id="resultado_i" style="float:right;margin-right:5%;width:40%;border-radius:15px;background-color:white;"></div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
   </body>
-</html>
-?>
+</html
