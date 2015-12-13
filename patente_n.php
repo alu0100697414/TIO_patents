@@ -1,4 +1,7 @@
 <?php
+  error_reporting(E_ALL);
+  ini_set('display_errors', '1');
+
   // error_reporting(E_ALL);
   // ini_set('error_reporting', E_ALL);
   //
@@ -49,36 +52,73 @@
   //
   // echo "<br>";echo "<br>";echo "<br>";
 
-  // $html = file_get_contents('http://www.oepm.es/es/invenciones/resultados.html?field=TITU_RESU&bases=0&keyword=bicicleta');
-  //
-  // echo $html;
-  //
-  //
-  // $DOM = new DOMDocument();
-  // $DOM->loadHTML($html);
-  //
-  //
-  // $h2 = $DOM->getElementsByTagName( 'h2' );
-  //
-  // echo $h2->length;
+  include('simple_html_dom.php');
 
   $resultado = $_POST['valorCaja1'];
+  $dato = str_replace(' ','+',$resultado);
 
-  function Obtener_contenidos($url,$inicio='',$final){
-    $source = @file_get_contents($url)or die('se ha producido un error');
-    $posicion_inicio = strpos($source, $inicio) + strlen($inicio);
-    $posicion_final = strpos($source, $final) - $posicion_inicio;
-    $found_text = substr($source, $posicion_inicio, $posicion_final);
+  $html = file_get_html('http://www.oepm.es/es/invenciones/resultados.html?field=TITU_RESU&bases=0&keyword=' . $dato);
 
-    return $inicio . $found_text .$final;
+  $rpp = 6;  // Resultados por pagina
+
+  // Cogemos los elemtos p de la pagina y los guardamos en un array
+  foreach($html->find('p') as $p) {
+    $links[] = $p->plaintext;
   }
 
-  $url = 'http://www.oepm.es/es/invenciones/resultados.html?field=TITU_RESU&bases=0&keyword=' . $resultado; /// pagina web del contenido
+  // Inicializamos todos los arrays a datos no disponibles
+  for($i=0; $i<$rpp; $i++){
+    $titulos[$i] = "No disponible.";
+    $clasificaciones[$i] = "No disponible.";
+    $n_publicaciones[$i] = "No disponible.";
+    $name_solicitante[$i] = "No disponible.";
+    $n_solicitud[$i] = "No disponible.";
+  }
 
-  // Obtener_contenidos(url,ancla inicio,ancla final);
-  echo "<br>";
-  echo "<h3 style='margin-left:5%;'>Patentes Nacionales</h3>";
-  echo "<br>";
-  echo utf8_encode(Obtener_contenidos($url,'<ul class="resBusquedas"><li>','</li></ul>'));
-  echo "<br>";
+  $j=0; // Inicializamos la j al primer titulo
+  while(strpos($links[$j],"Título") === false){
+    $j++;
+  }
+
+  $k=$j+1;
+  for($i=0; $i<$rpp; $i++){
+
+    $k++;
+
+    // Buscamos el limite de busqueda en cada iteracion
+    while(strpos($links[$k],"Título") === false and $k < count($links)-1){
+      $k++;
+    }
+
+    // Buscamos los valores de cada atributo
+    for($j;$j<$k;$j++){
+      if(strpos($links[$j],"Título") !== false){
+        $titulos[$i] = substr($links[$j],strpos($links[$j],":")+1);
+      }
+      if(strpos($links[$j],"Clasificación Internacional") !== false){
+        $clasificaciones[$i] = substr($links[$j],strpos($links[$j],":")+1);
+      }
+      if(strpos($links[$j],"Número de Publicación") !== false){
+        $n_publicaciones[$i] = substr($links[$j],strpos($links[$j],":")+1);
+      }
+      if(strpos($links[$j],"Nombre del primer solicitante") !== false){
+        $name_solicitante[$i] = substr($links[$j],strpos($links[$j],":")+1);
+      }
+      if(strpos($links[$j],"Número de solicitud") !== false){
+        $n_solicitud[$i] = substr($links[$j],strpos($links[$j],":")+1);
+      }
+    }
+
+    // Actualizamos j para la siguiente iteracion
+    $j=$k;
+  }
+
+  for($i=0;$i<$rpp;$i++){
+    echo "<h4>Patente " . ($i+1) . ":</h4>";
+    echo "Título:" . $titulos[$i] . "<br>";
+    echo "Clasificación:" . $clasificaciones[$i] . "<br>";
+    echo "Nº publicación: " . $n_publicaciones[$i] . "<br>";
+    echo "Solicitante: " . $name_solicitante[$i] . "<br>";
+    echo "Nº solicitud: " . $n_solicitud[$i] . "<br>";
+  }
 ?>
