@@ -2,62 +2,13 @@
   error_reporting(E_ALL);
   ini_set('display_errors', '1');
 
-  // error_reporting(E_ALL);
-  // ini_set('error_reporting', E_ALL);
-  //
-  // $servername = "localhost";
-  // $username = "alu4586";
-  // $password = "4OP3Xa";
-  // $dbname = "alu4586";
-  // $port = "8889";
-  //
-  // // Crea la conexión con la base de datos
-  // $database = new mysqli($servername, $username, $password, $dbname, $port);
-  //
-  // // Chequea la conexión
-  // if ($database->connect_error) {
-  //   die("Connection failed: " . $database->connect_error);
-  // };
-  //
-  // // Consulta que muestra cada fila entera de la tabla
-  // $result = $database->query( "SELECT titulo,id FROM p_nacional" );
-  //
-  // if( $result->num_rows > 0 ) {
-	//   while( $row = $result->fetch_object() ) {
-  // 	  echo json_encode($row);
-  //     echo "<br>";
-	//   }
-  // }
-  //
-  // else{
-  //   echo "ERROR EN LA CONSULTA. ESTÁ VACÍA LA TABLA.";
-  // }
-  //
-  // // Consulta que muestra solo el id de cada fila de la tabla
-  // $result = $database->query( "SELECT id FROM p_nacional" );
-  //
-  // if( $result->num_rows > 0 ) {
-	//   while( $row = $result->fetch_object() ) {
-  //     echo str_replace('"','',json_encode($row->id));
-  //     echo "<br>";
-	//   }
-  // }
-  //
-  // else {
-  //   echo "ERROR EN LA CONSULTA. ESTÁ VACÍA LA TABLA.";
-  // }
-  //
-  // $result->close();
-  // $database->close();
-  //
-  // echo "<br>";echo "<br>";echo "<br>";
-
   include('simple_html_dom.php');
 
   $resultado = $_POST['valorCaja1'];
   $dato = str_replace(' ','+',$resultado);
 
   $html = file_get_html('http://www.oepm.es/es/invenciones/resultados.html?field=TITU_RESU&bases=0&keyword=' . $dato);
+  $html2 = file_get_html('http://www.oepm.es/es/invenciones/resultados.html?field=TITU_RESU&bases=0&keyword=' . $dato . '&p=2');
 
   $rpp = 6;  // Resultados por pagina
 
@@ -66,8 +17,13 @@
     $links[] = $p->plaintext;
   }
 
+  // Cogemos los elemtos p de la pagina y los guardamos en un array
+  foreach($html2->find('p') as $p) {
+    $links2[] = $p->plaintext;
+  }
+
   // Inicializamos todos los arrays a datos no disponibles
-  for($i=0; $i<$rpp; $i++){
+  for($i=0; $i<($rpp*2); $i++){
     $titulos[$i] = "No disponible.";
     $clasificaciones[$i] = "No disponible.";
     $n_publicaciones[$i] = "No disponible.";
@@ -75,6 +31,7 @@
     $n_solicitud[$i] = "No disponible.";
   }
 
+  // Lo hacemos para la primera página
   $j=0; // Inicializamos la j al primer titulo
   while(strpos($links[$j],"Título") === false){
     $j++;
@@ -113,12 +70,69 @@
     $j=$k;
   }
 
-  for($i=0;$i<$rpp;$i++){
-    echo "<h4>Patente " . ($i+1) . ":</h4>";
-    echo "Título:" . $titulos[$i] . "<br>";
-    echo "Clasificación:" . $clasificaciones[$i] . "<br>";
-    echo "Nº publicación: " . $n_publicaciones[$i] . "<br>";
-    echo "Solicitante: " . $name_solicitante[$i] . "<br>";
-    echo "Nº solicitud: " . $n_solicitud[$i] . "<br>";
+  // Lo hacemos para la segunda página
+  $j=0; // Inicializamos la j al primer titulo
+  while(strpos($links2[$j],"Título") === false){
+    $j++;
   }
+
+  $k=$j+1;
+  for($i=6; $i<($rpp*2); $i++){
+
+    $k++;
+
+    // Buscamos el limite de busqueda en cada iteracion
+    while(strpos($links2[$k],"Título") === false and $k < count($links2)-1){
+      $k++;
+    }
+
+    // Buscamos los valores de cada atributo
+    for($j;$j<$k;$j++){
+      if(strpos($links2[$j],"Título") !== false){
+        $titulos[$i] = substr($links2[$j],strpos($links2[$j],":")+1);
+      }
+      if(strpos($links2[$j],"Clasificación Internacional") !== false){
+        $clasificaciones[$i] = substr($links2[$j],strpos($links2[$j],":")+1);
+      }
+      if(strpos($links2[$j],"Número de Publicación") !== false){
+        $n_publicaciones[$i] = substr($links2[$j],strpos($links2[$j],":")+1);
+      }
+      if(strpos($links2[$j],"Nombre del primer solicitante") !== false){
+        $name_solicitante[$i] = substr($links2[$j],strpos($links2[$j],":")+1);
+      }
+      if(strpos($links2[$j],"Número de solicitud") !== false){
+        $n_solicitud[$i] = substr($links2[$j],strpos($links2[$j],":")+1);
+      }
+    }
+
+    // Actualizamos j para la siguiente iteracion
+    $j=$k;
+  }
+
+  echo "<table class='table table-hover'>";
+  echo "<tr>";
+  echo "<td><strong>ID</strong></td>";
+  echo "<td><strong>Título</strong></td>";
+  echo "<td><strong>Clasificación</strong></td>";
+  echo "<td><strong>Nº publicación</strong></td>";
+  echo "<td><strong>Solicitante</strong></td>";
+  echo "<td><strong>Nº solicitud</strong></td>";
+  echo "</tr>";
+
+  $cont = 0;
+  for($i=0;$i<($rpp*2);$i++){
+
+    if($titulos[$i] !== "No disponible."){
+      $cont = $cont + 1;
+      echo "<tr>";
+      echo "<td>" . $cont . "</td>";
+      echo "<td>" . $titulos[$i] . "</td>";
+      echo "<td>" . $clasificaciones[$i] . "</td>";
+      echo "<td>" . $n_publicaciones[$i] . "</td>";
+      echo "<td>" . $name_solicitante[$i] . "</td>";
+      echo "<td>" . $n_solicitud[$i] . "</td>";
+      echo "</tr>";
+    }
+  }
+  echo "</table>";
 ?>
