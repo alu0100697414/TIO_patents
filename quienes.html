@@ -5,29 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>PatentULL</title>
+    <title>¿Quiénes somos?</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.css" rel="stylesheet">
     <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-
-    <script>
-    function realizaProceso(valorCaja1){
-      var parametros = {
-        "valorCaja1" : valorCaja1,
-      };
-      $.ajax({
-        data:  parametros,
-        url:   'patente_n.php',
-        type:  'post',
-        success:  function (response) {
-          $("#resultado_n").html(response);
-        }
-      });
-    }
-    </script>
-
   </head>
+
   <body style="background-color:#9FFFD4;">
       <nav class="navbar navbar-default" role="navigation">
       <!-- El logotipo y el icono que despliega el menú se agrupan
@@ -56,7 +40,7 @@
             <a href="quienes.html">¿Quiénes somos?</a></li>
           <li class="dropdown">
           <li class="active">
-            <a href="#">Ayuda</a></li>
+            <a href="ayuda.html">Ayuda</a></li>
           <li class="dropdown">
         </ul>
       </div>

@@ -5,30 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>PatentULL</title>
+    <title>Ayuda</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.css" rel="stylesheet">
     <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-
-    <script>
-    function realizaProceso(valorCaja1){
-      var parametros = {
-        "valorCaja1" : valorCaja1,
-      };
-      $.ajax({
-        data:  parametros,
-        url:   'patente_n.php',
-        type:  'post',
-        success:  function (response) {
-          $("#resultado_n").html(response);
-        }
-      });
-    }
-    </script>
-
   </head>
-  <body style="background-color:#8FFFD4;">
+
+  <body style="background-color:#9FFFD4;">
       <nav class="navbar navbar-default" role="navigation">
       <!-- El logotipo y el icono que despliega el menú se agrupan
       para mostrarlos mejor en los dispositivos móviles -->
@@ -64,22 +48,24 @@
 
     <br>
 
-    <center><h2>Busque patentes aquí:</h2></center>
+    <div style="margin:0% 15%;">
+      <center><h2>Ayuda</h2></center>
+      <br>
+      <p>Los pasos a seguir para buscar patentes relacionadas con un tema son:</p>
+      <p>1. Acceder al apartado Inicio.</p>
+      <p>2. Introducir la información en el formulario y pinchar en "Enviar".</p>
+      <p>3. Esperar unos segundos a que se muestren los resultados.</p>
 
-    <!-- Buscador -->
-    <div class="col-lg-6 col-md-offset-3">
-      <div class="input-group">
-        <input type="text" class="form-control" id="valor" placeholder="Buscar patente...">
-        <span class="input-group-btn">
-        <button class="btn btn-default" type="button" href="javascript:;" onclick="realizaProceso($('#valor').val());">Enviar</button>
-        </span>
-      </div><!-- /input-group -->
-    </div><!-- /.col-lg-6 -->
+      <br>
 
-    <br><br><br>
+      <p>No se apure si los resultados tardan en mostrarse. La velocidad depende de la web
+      a la que le hacemos la consulta y del propio servidor en el que tenemos alojado el
+      sistema.</p>
+    </div>
 
-    <div id="resultado_n" style="margin:0% 5%;background-color:#DCDCDC;"></div>
+    <center><img src="img/patente.png" alt="ULL"></center>
 
+    <br>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
