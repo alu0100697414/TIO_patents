@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--<meta http-equiv="refresh" content="0;URL=http://banot.etsii.ull.es/alu4378/TIO_patents">-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>PatentULL</title>
@@ -20,7 +21,11 @@
         data:  parametros,
         url:   'patente_n.php',
         type:  'post',
+        beforeSend:function(){
+          $('#carga').css({display:'block'});
+        },
         success:  function (response) {
+          $('#carga').css('display','none');
           $("#resultado_n").html(response);
         }
       });
@@ -39,7 +44,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">PatentULL</a>
+        <a class="navbar-brand" href="http://banot.etsii.ull.es/alu4378/TIO_patents">PatentULL</a>
       </div>
 
       <!-- Agrupar los enlaces de navegación, los formularios y cualquier
@@ -47,7 +52,7 @@
       <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav">
           <li class="active">
-            <a href="index.html">Inicio</a></li>
+            <a href="http://banot.etsii.ull.es/alu4378/TIO_patents">Inicio</a></li>
           <li class="dropdown">
         </ul>
 
@@ -77,6 +82,12 @@
     </div><!-- /.col-lg-6 -->
 
     <br><br><br>
+
+    <div id="carga" style="display:none">
+      <br>
+      <center><img src="http://s01.europapress.net/chance/loading.gif" width="200px" height="200px"/></center>
+      <br>
+    </div>
 
     <div id="resultado_n" style="margin:0% 5%;background-color:#DCDCDC;"></div>
 
